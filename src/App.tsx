@@ -4,7 +4,7 @@ import { Local } from "boardgame.io/multiplayer";
 import { ThemeProvider, CSSReset, Box } from "@chakra-ui/core";
 
 import { JustOne } from "./Game";
-import { Board } from "./Board";
+import { Board } from "./Board/Board";
 
 const JustOneClient = Client({
     game: JustOne,
