@@ -48,19 +48,6 @@ const chooseNumber: Move<JustOneState> = (G, ctx, index: number) => {
 
     if (ctx.events?.setActivePlayers) {
         G.stage = GameStage.SubmitClues;
-        ctx.events.setActivePlayers({
-            others: "submitClue",
-            moveLimit: 1,
-        });
-    }
-};
-
-const submitClue: Move<JustOneState> = (G, ctx, clue: string) => {
-    if (ctx.playerID)
-        G.clues.push({ clue: clue, playerId: ctx.playerID, valid: true });
-
-    if (ctx.events?.setActivePlayers) {
-        G.stage = GameStage.CheckClues;
 
         // Next player will check the clues
         // Loop to the beginning if at the end of the play order
@@ -70,11 +57,20 @@ const submitClue: Move<JustOneState> = (G, ctx, clue: string) => {
                 : ctx.playOrder[ctx.playOrderPos + 1];
 
         ctx.events.setActivePlayers({
-            value: {
-                [playerToCheckClues]: "checkClues",
+            others: "submitClues",
+            moveLimit: 1,
+            next: {
+                value: {
+                    [playerToCheckClues]: "checkClues",
+                },
             },
         });
     }
+};
+
+const submitClue: Move<JustOneState> = (G, ctx, clue: string) => {
+    if (ctx.playerID)
+        G.clues.push({ clue: clue, playerId: ctx.playerID, valid: true });
 };
 
 const checkClue: Move<JustOneState> = (
@@ -99,14 +95,30 @@ const submitCheckedClues: Move<JustOneState> = (G, ctx) => {
 
 const guessWord: Move<JustOneState> = (G, ctx, guess: string) => {
     G.guess = guess;
-    if (ctx.events?.setStage) {
+    if (ctx.events?.setActivePlayers) {
         G.stage = GameStage.CheckGuess;
-        ctx.events.setStage("checkGuess");
+
+        // Next player will check the clues
+        // Loop to the beginning if at the end of the play order
+        const playerToCheckClues =
+            ctx.playOrder.length === ctx.playOrderPos + 1
+                ? ctx.playOrder[0]
+                : ctx.playOrder[ctx.playOrderPos + 1];
+
+        ctx.events.setActivePlayers({
+            value: {
+                [playerToCheckClues]: "checkGuess",
+            },
+        });
     }
 };
 
 const skipGuess: Move<JustOneState> = (G, ctx) => {
     G.turnResult = TurnResult.Skip;
+
+    if (G.currentCard) G.discards.push(G.currentCard);
+    G.currentCard = undefined;
+
     if (ctx.events?.setActivePlayers) {
         G.stage = GameStage.EndTurn;
         ctx.events.setActivePlayers({
@@ -136,6 +148,9 @@ const checkGuess: Move<JustOneState> = (G, ctx, isCorrect: boolean) => {
         ctx.events.setActivePlayers({
             all: "endTurn",
             moveLimit: 1,
+            next: {
+                all: "waitingForOthers",
+            },
         });
     }
 };
@@ -151,21 +166,38 @@ export const JustOne: Game<JustOneState> = {
 
     setup: (ctx) => ({
         deck: ctx.random?.Shuffle(deck).slice(0, 13),
+        clues: [],
+        successPile: [],
+        discards: [],
     }),
 
     turn: {
         onBegin: (G, ctx) => {
             G.stage = GameStage.Draw;
-            if (ctx.events?.setStage) ctx.events?.setStage("drawCard");
+            if (ctx.events?.setActivePlayers)
+                ctx.events?.setActivePlayers({
+                    currentPlayer: "drawCard",
+                });
         },
         stages: {
             drawCard: { moves: { drawCard }, next: "chooseNumber" },
             chooseNumber: { moves: { chooseNumber } },
-            submitClue: { moves: { submitClue } },
+            submitClues: { moves: { submitClue } },
             checkClues: { moves: { checkClue, submitCheckedClues } },
             guessWord: { moves: { guessWord, skipGuess } },
             checkGuess: { moves: { checkGuess } },
             endTurn: { moves: { endTurn } },
+            waitingForOthers: { moves: {} },
+        },
+        endIf: (_, ctx) => {
+            if (ctx.activePlayers) {
+                // End turn if every player is waiting
+                return Object.keys(ctx.activePlayers).every((playerId) =>
+                    ctx.activePlayers
+                        ? ctx.activePlayers[playerId] === "waitingForOthers"
+                        : false
+                );
+            }
         },
         onEnd: (G) => {
             G.clues = [];
@@ -173,5 +205,48 @@ export const JustOne: Game<JustOneState> = {
             G.selectedWordIndex = undefined;
             G.turnResult = TurnResult.Undetermined;
         },
+    },
+
+    endIf: (G, _) => {
+        if (G.deck.length === 0 && G.currentCard === undefined) {
+            switch (G.successPile.length) {
+                case 13:
+                    return { message: "Perfect score! Can you do it again?" };
+
+                case 12:
+                    return {
+                        message: "Incredible! Your friends must be impressed!",
+                    };
+
+                case 11:
+                    return {
+                        message: "Awesome! That's a score woth celebrating!",
+                    };
+
+                case 10:
+                case 9:
+                    return { message: "Wow, not bad at all!" };
+
+                case 8:
+                case 7:
+                    return {
+                        message: "You're in the average. Can you do better?",
+                    };
+
+                case 6:
+                case 5:
+                case 4:
+                    return { message: "That's a good start. Try again!" };
+
+                case 3:
+                case 2:
+                case 1:
+                case 0:
+                    return { message: "Try again, and again, and again." };
+
+                default:
+                    break;
+            }
+        }
     },
 };
