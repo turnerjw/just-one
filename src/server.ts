@@ -6,8 +6,11 @@ import { JustOne } from "./Game";
 const server = Server({ games: [JustOne] });
 const PORT = process.env.PORT || 8000;
 
+console.log(PORT);
+console.log(__dirname);
+
 // Build path relative to the server.js file
-const frontEndAppBuildPath = path.resolve(__dirname, "./build");
+const frontEndAppBuildPath = path.resolve(__dirname, "../build");
 server.app.use(serve(frontEndAppBuildPath));
 
 server.run(PORT as number, () => {
