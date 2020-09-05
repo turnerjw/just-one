@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { Tooltip, Flex, Button, Text } from "@chakra-ui/core";
+import { Tooltip, Flex, Button, Text, Stack, Box } from "@chakra-ui/core";
 
 const server = "http://localhost:8000";
 
@@ -20,11 +20,9 @@ export const RoomList: React.FC = () => {
         }
     );
 
-    console.log(data);
-
     return (
-        <>
-            {data?.rooms.map((room, index) => {
+        <Stack spacing={2}>
+            {data?.rooms.map((room) => {
                 const playerList = room.players
                     .filter((player) => player.name)
                     .reduce((prev, player, index) => {
@@ -33,40 +31,42 @@ export const RoomList: React.FC = () => {
                         }`;
                     }, "");
                 return (
-                    <Tooltip
-                        hasArrow
-                        placement="top"
-                        label={playerList ? playerList : "No players yet"}
-                        aria-label={playerList ? playerList : "No players yet"}
-                        key={room.gameID}
-                    >
-                        <Flex
-                            alignItems="center"
-                            justifyContent="space-between"
-                            mt={index === 0 ? 0 : 2}
-                            rounded="md"
-                            bg="#0005"
+                    <Box key={room.gameID}>
+                        <Tooltip
+                            hasArrow
+                            placement="top"
+                            label={playerList ? playerList : "No players yet"}
+                            aria-label={
+                                playerList ? playerList : "No players yet"
+                            }
                         >
-                            <Text ml={2} color="white">
-                                <b>{room.gameID}</b>{" "}
-                                {
-                                    room.players.filter(
-                                        (player) => !!player.name
-                                    ).length
-                                }
-                                /{room.players.length} players
-                            </Text>
-                            <Button
-                                ml={2}
-                                variantColor="teal"
-                                onClick={() => console.log("Join clicked")}
+                            <Flex
+                                alignItems="center"
+                                justifyContent="space-between"
+                                rounded="md"
+                                bg="#0005"
                             >
-                                Join
-                            </Button>
-                        </Flex>
-                    </Tooltip>
+                                <Text ml={2} color="white">
+                                    <b>{room.gameID}</b>{" "}
+                                    {
+                                        room.players.filter(
+                                            (player) => !!player.name
+                                        ).length
+                                    }
+                                    /{room.players.length} players
+                                </Text>
+                                <Button
+                                    ml={2}
+                                    variantColor="teal"
+                                    onClick={() => console.log("Join clicked")}
+                                >
+                                    Join
+                                </Button>
+                            </Flex>
+                        </Tooltip>
+                    </Box>
                 );
             })}
-        </>
+        </Stack>
     );
 };
