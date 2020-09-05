@@ -19,6 +19,7 @@
         "koa-static": "^5.0.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "react-query": "^2.15.1",
         "react-scripts": "3.4.3",
         "typescript": "~3.7.2"
     },
@@ -47,5 +48,6 @@
     "devDependencies": {
         "@types/koa-static": "^4.0.1",
         "ts-node": "^9.0.0"
-    }
+    },
+    "proxy": "http://localhost:8000"
 }

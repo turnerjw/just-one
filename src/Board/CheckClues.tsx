@@ -20,6 +20,7 @@ export const CheckClues: React.FC<BoardProps<JustOneState>> = ({
                         alignItems="center"
                         rounded="md"
                         bg="#0005"
+                        key={clue.playerId}
                     >
                         <Flex alignItems="center">
                             <Icon
