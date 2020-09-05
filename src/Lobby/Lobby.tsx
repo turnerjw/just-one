@@ -1,20 +1,13 @@
 import React from "react";
-import { Box, Text, Flex, Input, Button, Tooltip } from "@chakra-ui/core";
-import { useQuery } from "react-query";
+import { Box, Text, Flex, Input, Button, Divider } from "@chakra-ui/core";
 import { url } from "../BackgroundPatterns";
 import { RoomList } from "./RoomList";
+import { CreateRoom } from "./CreateRoom";
 
-const server = "http://localhost:8000";
-
-interface RoomInstances {
-    rooms: {
-        gameID: string;
-        players: { id: string; name?: string }[];
-    }[];
-}
+const serverUrl = "http://localhost:8000";
 
 export const Lobby: React.FC = () => {
-    const [isConfirmed, setIsConfirmed] = React.useState(false);
+    const [isNameConfirmed, setIsNameConfirmed] = React.useState(false);
     const [name, setName] = React.useState("");
 
     return (
@@ -25,21 +18,21 @@ export const Lobby: React.FC = () => {
             <Box
                 background={`url("${url}"),
                         linear-gradient(135deg,#0010ff,#0063e1)`}
-                maxW="sm"
+                maxW="md"
                 my={10}
                 mx="auto"
                 p={4}
                 rounded="20px"
             >
-                {isConfirmed ? (
+                {isNameConfirmed ? (
                     <Flex alignItems="center" justifyContent="space-between">
                         <Text color="white">
-                            <b>{name}</b>
+                            Name: <b>{name}</b>
                         </Text>
                         <Button
                             ml={2}
                             variantColor="teal"
-                            onClick={() => setIsConfirmed(false)}
+                            onClick={() => setIsNameConfirmed(false)}
                         >
                             Edit
                         </Button>
@@ -55,7 +48,7 @@ export const Lobby: React.FC = () => {
                         <Button
                             ml={2}
                             variantColor="teal"
-                            onClick={() => setIsConfirmed(true)}
+                            onClick={() => setIsNameConfirmed(true)}
                         >
                             Submit
                         </Button>
@@ -65,11 +58,16 @@ export const Lobby: React.FC = () => {
             <Box
                 background={`url("${url}"),
             linear-gradient(135deg,#0010ff,#0063e1)`}
-                maxW="lg"
+                maxW="md"
                 mx="auto"
                 p={4}
                 rounded="20px"
             >
+                <Text fontSize="2xl" color="white">
+                    <b>Room List</b>
+                </Text>
+                <CreateRoom serverUrl={serverUrl} />
+                <Divider />
                 <RoomList />
             </Box>
         </Box>
