@@ -20,6 +20,14 @@ export const RoomList: React.FC = () => {
         }
     );
 
+    if (data?.rooms.length === 0) {
+        return (
+            <Text color="white" textAlign="center">
+                There are no rooms. You should create one, idiot.
+            </Text>
+        );
+    }
+
     return (
         <Stack spacing={2}>
             {data?.rooms.map((room) => {
