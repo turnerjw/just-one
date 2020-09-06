@@ -1,6 +1,4 @@
 import React from "react";
-import { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { JustOneState } from "../Game";
 import { Box, AspectRatioBox, Text } from "@chakra-ui/core";
 import { url } from "../BackgroundPatterns";
 
