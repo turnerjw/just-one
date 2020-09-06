@@ -44,6 +44,7 @@ export const OtherPlayers: React.FC<BoardProps<JustOneState>> = (props) => {
                 const actionText = getPlayerActionText(player.id);
                 return (
                     <Box
+                        key={player.id}
                         background={`url("${url}"),
                         linear-gradient(135deg,#0010ff,#0063e1)`}
                         maxW="sm"
