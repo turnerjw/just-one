@@ -8,6 +8,7 @@ export interface RoomProps {
     playerCred: string;
     serverUrl: string;
     onLeaveRoom: () => void;
+    onStartGame: () => void;
 }
 
 export interface RoomInstanceData {
@@ -23,6 +24,7 @@ export const Room: React.FC<RoomProps> = ({
     playerCred,
     playerId,
     onLeaveRoom,
+    onStartGame,
     serverUrl,
 }) => {
     const { data, status } = useQuery<RoomInstanceData>(
@@ -97,7 +99,11 @@ export const Room: React.FC<RoomProps> = ({
                         >
                             Leave
                         </Button>
-                        <Button ml={2} variantColor="teal">
+                        <Button
+                            ml={2}
+                            variantColor="teal"
+                            onClick={() => onStartGame()}
+                        >
                             Start
                         </Button>
                     </Flex>

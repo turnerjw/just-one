@@ -26,7 +26,7 @@ export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
             boxShadow={isActive ? "0px 0px 20px -5px rgba(255, 215, 0)" : null}
             borderColor={isActive ? "#fffb00" : "#fff0"}
             borderWidth="1px"
-            borderStyle="solid"
+            borderStyle={isActive ? "solid" : "none"}
         >
             <Stack>
                 <Text color="white">

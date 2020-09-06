@@ -9,14 +9,31 @@ import {
     useToast,
 } from "@chakra-ui/core";
 import { useMutation } from "react-query";
+import { Client } from "boardgame.io/react";
+import { SocketIO } from "boardgame.io/multiplayer";
 import { url } from "../BackgroundPatterns";
 import { RoomList } from "./RoomList";
 import { CreateRoom } from "./CreateRoom";
 import { Room } from "./Room";
+import { JustOne } from "../Game";
+import { Board } from "../Board/Board";
 
 const serverUrl = "http://localhost:8000";
 
+const JustOneClient = Client({
+    game: JustOne,
+    board: Board,
+    //numPlayers: 3,
+    multiplayer: SocketIO({
+        server: `localhost:8000`,
+    }),
+});
+
 export const Lobby: React.FC = () => {
+    const [isGameStarted, setIsGameStarted] = React.useState(false);
+
+    const handleStartGame = () => setIsGameStarted(true);
+
     const [isNameConfirmed, setIsNameConfirmed] = React.useState(
         localStorage.getItem("isNameConfirmed") === "true" ? true : false
     );
@@ -117,6 +134,17 @@ export const Lobby: React.FC = () => {
         setPlayerId(undefined);
     };
 
+    if (isGameStarted) {
+        return (
+            <JustOneClient
+                credentials={playerCred}
+                gameID={currentRoomId}
+                playerID={playerId?.toString()}
+                debug={false}
+            />
+        );
+    }
+
     return (
         <Box>
             <Text color="white" fontSize="3xl">
@@ -158,7 +186,7 @@ export const Lobby: React.FC = () => {
                             variantColor="teal"
                             onClick={() => setIsNameConfirmed(true)}
                         >
-                            Submit
+                            Confirm
                         </Button>
                     </Flex>
                 )}
@@ -175,6 +203,7 @@ export const Lobby: React.FC = () => {
                     <Room
                         roomId={currentRoomId}
                         onLeaveRoom={handleLeaveRoom}
+                        onStartGame={handleStartGame}
                         playerCred={playerCred}
                         playerId={playerId}
                         serverUrl={serverUrl}
