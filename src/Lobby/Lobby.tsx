@@ -47,15 +47,19 @@ export const Lobby: React.FC = () => {
     }, [isNameConfirmed]);
     React.useEffect(() => {
         if (name) localStorage.setItem("name", name);
+        else localStorage.removeItem("name");
     }, [name]);
     React.useEffect(() => {
         if (currentRoomId) localStorage.setItem("currentRoomId", currentRoomId);
+        else localStorage.removeItem("currentRoomId");
     }, [currentRoomId]);
     React.useEffect(() => {
         if (playerCred) localStorage.setItem("playerCred", playerCred);
+        else localStorage.removeItem("playerCred");
     }, [playerCred]);
     React.useEffect(() => {
         if (playerId) localStorage.setItem("playerId", playerId.toString());
+        else localStorage.removeItem("playerId");
     }, [playerId]);
 
     const toast = useToast();

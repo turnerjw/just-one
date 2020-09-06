@@ -76,18 +76,17 @@ export const Room: React.FC<RoomProps> = ({
                     </Text>
                     <Flex mb={2} wrap="wrap">
                         {data?.players.map((player) => (
-                            <Box>
-                                <Text
-                                    p={2}
-                                    mb={2}
-                                    mr={2}
-                                    color="white"
-                                    bg="#0005"
-                                    rounded="md"
-                                >
-                                    {player.name ? player.name : "[OPEN]"}
-                                </Text>
-                            </Box>
+                            <Text
+                                p={2}
+                                mb={2}
+                                mr={2}
+                                color="white"
+                                bg="#0005"
+                                rounded="md"
+                                key={player.id}
+                            >
+                                {player.name ? player.name : "[OPEN]"}
+                            </Text>
                         ))}
                     </Flex>
                     <Divider />
