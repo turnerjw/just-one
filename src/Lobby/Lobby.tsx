@@ -12,12 +12,17 @@ import { useMutation } from "react-query";
 import { url } from "../BackgroundPatterns";
 import { RoomList } from "./RoomList";
 import { CreateRoom } from "./CreateRoom";
+import { Room } from "./Room";
 
 const serverUrl = "http://localhost:8000";
 
 export const Lobby: React.FC = () => {
     const [isNameConfirmed, setIsNameConfirmed] = React.useState(false);
     const [name, setName] = React.useState("");
+
+    const [currentRoomId, setCurrentRoomId] = React.useState<string>();
+    const [playerCred, setPlayerCred] = React.useState<string>();
+    const [playerId, setPlayerId] = React.useState<number>();
 
     const toast = useToast();
 
@@ -40,7 +45,7 @@ export const Lobby: React.FC = () => {
 
     if (joinRoomData) console.log(joinRoomData.playerCredentials);
 
-    const handleJoinRoom = (playerId: number, roomId: string) => {
+    const handleJoinRoom = async (playerId: number, roomId: string) => {
         if (!name) {
             toast({
                 title: "Can't join game",
@@ -49,7 +54,23 @@ export const Lobby: React.FC = () => {
                 position: "top-right",
             });
         }
-        mutate({ playerId: playerId, playerName: name, roomId: roomId });
+        try {
+            const playerCred = await mutate({
+                playerId: playerId,
+                playerName: name,
+                roomId: roomId,
+            });
+            setCurrentRoomId(roomId);
+            setPlayerCred(playerCred?.playerCredentials);
+            setPlayerId(playerId);
+        } catch {
+            toast({
+                title: "Can't join game",
+                description: "There was a problem, idk what happened",
+                status: "error",
+                position: "top-right",
+            });
+        }
     };
 
     return (
@@ -105,12 +126,21 @@ export const Lobby: React.FC = () => {
                 p={4}
                 rounded="20px"
             >
-                <Text fontSize="2xl" color="white">
-                    <b>Room List</b>
-                </Text>
-                <CreateRoom serverUrl={serverUrl} />
-                <Divider />
-                <RoomList serverUrl={serverUrl} onJoinRoom={handleJoinRoom} />
+                {!!currentRoomId && playerId !== undefined && !!playerCred ? (
+                    <Room roomId={currentRoomId} serverUrl={serverUrl} />
+                ) : (
+                    <>
+                        <Text fontSize="2xl" color="white">
+                            <b>Room List</b>
+                        </Text>
+                        <CreateRoom serverUrl={serverUrl} />
+                        <Divider />
+                        <RoomList
+                            serverUrl={serverUrl}
+                            onJoinRoom={handleJoinRoom}
+                        />
+                    </>
+                )}
             </Box>
         </Box>
     );

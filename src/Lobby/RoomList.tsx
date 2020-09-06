@@ -22,7 +22,7 @@ export const RoomList: React.FC<RoomListProps> = ({
         "roomInstances",
         () => fetch(`${serverUrl}/games/just-one`).then((res) => res.json()),
         {
-            refetchInterval: 5000,
+            refetchInterval: 2000,
         }
     );
 
