@@ -23,7 +23,6 @@ const serverUrl = "http://localhost:8000";
 const JustOneClient = Client({
     game: JustOne,
     board: Board,
-    //numPlayers: 3,
     multiplayer: SocketIO({
         server: `localhost:8000`,
     }),

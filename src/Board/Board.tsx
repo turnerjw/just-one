@@ -1,49 +1,56 @@
 import React from "react";
 import { BoardProps } from "boardgame.io/react";
-import { Box, Stack, Text } from "@chakra-ui/core";
+import { Box, Stack, Text, Flex, Icon, Tooltip } from "@chakra-ui/core";
 
 import { JustOneState } from "../Game";
 import { url } from "../BackgroundPatterns";
-import { DrawCard } from "./DrawCard";
-import { ChooseNumber } from "./ChooseNumber";
-import { SubmitClues } from "./SubmitClues";
-import { CheckClues } from "./CheckClues";
-import { GuessWord } from "./GuessWord";
-import { CheckGuess } from "./CheckGuess";
-import { EndTurn } from "./EndTurn";
+import { PlayerControls } from "./PlayerControls";
 
 export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
-    const { isActive, playerID } = props;
-    return (
-        <Box
-            background={`url("${url}"),
-            linear-gradient(135deg,#0010ff,#0063e1)`}
-            maxW="sm"
-            mt={10}
-            mx="auto"
-            p={4}
-            rounded="20px"
-            boxShadow={isActive ? "0px 0px 20px -5px rgba(255, 215, 0)" : null}
-            borderColor={isActive ? "#fffb00" : "#fff0"}
-            borderWidth="1px"
-            borderStyle={isActive ? "solid" : "none"}
-        >
-            <Stack>
-                <Text color="white">
-                    <b>Player ID: {playerID}</b>
-                </Text>
-                {/* <Text color="white">
-                    <b>Active: {isActive ? "True" : "False"}</b>
-                </Text> */}
+    const { isActive, playerID, gameMetadata, ctx } = props;
 
-                <DrawCard {...props} />
-                <ChooseNumber {...props} />
-                <SubmitClues {...props} />
-                <CheckClues {...props} />
-                <GuessWord {...props} />
-                <CheckGuess {...props} />
-                <EndTurn {...props} />
-            </Stack>
+    const otherPlayers = gameMetadata?.filter((player) => {
+        if (playerID) return !!player.name && player.id !== +playerID;
+        else return !!player.name;
+    });
+
+    return (
+        <Box>
+            <Flex wrap="wrap" justifyContent="center">
+                {otherPlayers?.map((player) => (
+                    <Box
+                        background={`url("${url}"),
+                        linear-gradient(135deg,#0010ff,#0063e1)`}
+                        maxW="sm"
+                        minW="sm"
+                        mt={2}
+                        mr={2}
+                        p={4}
+                        rounded="20px"
+                    >
+                        <Flex alignItems="center">
+                            {ctx.currentPlayer === player.id.toString() ? (
+                                <Tooltip
+                                    hasArrow
+                                    label={`${player.name} is guessing this turn`}
+                                    aria-label={`${player.name} is guessing this turn`}
+                                    placement="top"
+                                >
+                                    <Icon
+                                        name="star"
+                                        color="yellow.400"
+                                        mr={2}
+                                    />
+                                </Tooltip>
+                            ) : null}
+                            <Text color="white">
+                                <b>{player?.name}</b>
+                            </Text>
+                        </Flex>
+                    </Box>
+                ))}
+            </Flex>
+            <PlayerControls {...props} />
         </Box>
     );
 };
