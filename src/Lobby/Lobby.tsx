@@ -17,12 +17,46 @@ import { Room } from "./Room";
 const serverUrl = "http://localhost:8000";
 
 export const Lobby: React.FC = () => {
-    const [isNameConfirmed, setIsNameConfirmed] = React.useState(false);
-    const [name, setName] = React.useState("");
+    const [isNameConfirmed, setIsNameConfirmed] = React.useState(
+        localStorage.getItem("isNameConfirmed") === "true" ? true : false
+    );
+    const [name, setName] = React.useState(() => {
+        const shouldResetName =
+            localStorage.getItem("isNameConfirmed") !== "true";
+        if (shouldResetName) return "";
+        else return localStorage.getItem("name") || "";
+    });
 
-    const [currentRoomId, setCurrentRoomId] = React.useState<string>();
-    const [playerCred, setPlayerCred] = React.useState<string>();
-    const [playerId, setPlayerId] = React.useState<number>();
+    const [currentRoomId, setCurrentRoomId] = React.useState<
+        string | undefined
+    >(localStorage.getItem("currentRoomId") || undefined);
+    const [playerCred, setPlayerCred] = React.useState<string | undefined>(
+        localStorage.getItem("playerCred") || undefined
+    );
+    const [playerId, setPlayerId] = React.useState<number | undefined>(
+        Number.isSafeInteger(Number(localStorage.getItem("playerId")))
+            ? Number(localStorage.getItem("playerId"))
+            : undefined
+    );
+
+    React.useEffect(() => {
+        localStorage.setItem(
+            "isNameConfirmed",
+            JSON.stringify(isNameConfirmed)
+        );
+    }, [isNameConfirmed]);
+    React.useEffect(() => {
+        if (name) localStorage.setItem("name", name);
+    }, [name]);
+    React.useEffect(() => {
+        if (currentRoomId) localStorage.setItem("currentRoomId", currentRoomId);
+    }, [currentRoomId]);
+    React.useEffect(() => {
+        if (playerCred) localStorage.setItem("playerCred", playerCred);
+    }, [playerCred]);
+    React.useEffect(() => {
+        if (playerId) localStorage.setItem("playerId", playerId.toString());
+    }, [playerId]);
 
     const toast = useToast();
 
@@ -73,6 +107,12 @@ export const Lobby: React.FC = () => {
         }
     };
 
+    const handleLeaveRoom = () => {
+        setCurrentRoomId(undefined);
+        setPlayerCred(undefined);
+        setPlayerId(undefined);
+    };
+
     return (
         <Box>
             <Text color="white" fontSize="3xl">
@@ -106,6 +146,7 @@ export const Lobby: React.FC = () => {
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) => setName(e.target.value)}
+                            value={name}
                             placeholder="Choose a name"
                         />
                         <Button
@@ -127,7 +168,13 @@ export const Lobby: React.FC = () => {
                 rounded="20px"
             >
                 {!!currentRoomId && playerId !== undefined && !!playerCred ? (
-                    <Room roomId={currentRoomId} serverUrl={serverUrl} />
+                    <Room
+                        roomId={currentRoomId}
+                        onLeaveRoom={handleLeaveRoom}
+                        playerCred={playerCred}
+                        playerId={playerId}
+                        serverUrl={serverUrl}
+                    />
                 ) : (
                     <>
                         <Text fontSize="2xl" color="white">

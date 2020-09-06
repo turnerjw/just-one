@@ -1,10 +1,13 @@
 import React from "react";
 import { Box, Text, Spinner, Flex, Button, Divider } from "@chakra-ui/core";
-import { useQuery, QueryStatus } from "react-query";
+import { useQuery, QueryStatus, useMutation } from "react-query";
 
 export interface RoomProps {
     roomId: string;
+    playerId: number;
+    playerCred: string;
     serverUrl: string;
+    onLeaveRoom: () => void;
 }
 
 export interface RoomInstanceData {
@@ -15,7 +18,13 @@ export interface RoomInstanceData {
     }[];
 }
 
-export const Room: React.FC<RoomProps> = ({ roomId, serverUrl }) => {
+export const Room: React.FC<RoomProps> = ({
+    roomId,
+    playerCred,
+    playerId,
+    onLeaveRoom,
+    serverUrl,
+}) => {
     const { data, status } = useQuery<RoomInstanceData>(
         "roomInstance",
         () =>
@@ -27,7 +36,33 @@ export const Room: React.FC<RoomProps> = ({ roomId, serverUrl }) => {
         }
     );
 
-    console.log(data);
+    const [leaveRoom] = useMutation<
+        undefined,
+        undefined,
+        { roomId: string; playerId: number; playerCred: string }
+    >(({ roomId, playerId, playerCred }) =>
+        fetch(`${serverUrl}/games/just-one/${roomId}/leave`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                playerID: playerId,
+                credentials: playerCred,
+            }),
+        }).then((res) => res.json())
+    );
+
+    const handleLeaveRoom = async () => {
+        try {
+            await leaveRoom({
+                playerCred: playerCred,
+                playerId: playerId,
+                roomId: roomId,
+            });
+            onLeaveRoom();
+        } catch (error) {}
+    };
 
     return (
         <Box>
@@ -57,7 +92,12 @@ export const Room: React.FC<RoomProps> = ({ roomId, serverUrl }) => {
                     </Flex>
                     <Divider />
                     <Flex justifyContent="flex-end">
-                        <Button variantColor="yellow">Leave</Button>
+                        <Button
+                            variantColor="yellow"
+                            onClick={() => handleLeaveRoom()}
+                        >
+                            Leave
+                        </Button>
                         <Button ml={2} variantColor="teal">
                             Start
                         </Button>

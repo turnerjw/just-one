@@ -1,14 +1,11 @@
 import React from "react";
-import { Client, Lobby as OGLobby } from "boardgame.io/react";
+import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
 import {
     theme,
     ThemeProvider,
     CSSReset,
     Box,
-    Flex,
-    Input,
-    Button,
     DefaultTheme,
     Text,
 } from "@chakra-ui/core";
@@ -16,7 +13,6 @@ import {
 import { JustOne } from "./Game";
 import { Board } from "./Board/Board";
 import { Lobby } from "./Lobby/Lobby";
-import { url } from "./BackgroundPatterns";
 
 const JustOneClient = Client({
     game: JustOne,
@@ -27,7 +23,7 @@ const JustOneClient = Client({
     }),
 });
 
-const importedGames = [{ game: JustOne, board: Board }];
+// const importedGames = [{ game: JustOne, board: Board }];
 
 const customTheme: DefaultTheme = {
     ...theme,
@@ -48,7 +44,7 @@ export const App = () => {
                     </Text>
                     <Lobby />
                 </Box>
-                <Box
+                {/* <Box
                     background={`url("${url}"),
                         linear-gradient(135deg,#0010ff,#0063e1)`}
                     maxW="sm"
@@ -62,7 +58,7 @@ export const App = () => {
                         lobbyServer={`http://localhost:8000`}
                         gameComponents={importedGames}
                     />
-                </Box>
+                </Box> */}
                 {/* <JustOneClient playerID="1" />
             <JustOneClient playerID="2" /> */}
                 {/* <JustOneClient playerID="3" />
