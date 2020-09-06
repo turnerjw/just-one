@@ -38,9 +38,6 @@ const customTheme: DefaultTheme = {
 };
 
 export const App = () => {
-    // const [isConfirmed, setIsConfirmed] = React.useState(false);
-    // const [name, setName] = React.useState("");
-
     return (
         <ThemeProvider theme={customTheme}>
             <CSSReset />
@@ -66,35 +63,6 @@ export const App = () => {
                         gameComponents={importedGames}
                     />
                 </Box>
-                {/* {isConfirmed ? (
-                    <JustOneClient playerID={name} />
-                ) : (
-                    <Box
-                        background={`url("${url}"),
-                        linear-gradient(135deg,#0010ff,#0063e1)`}
-                        maxW="sm"
-                        mt={10}
-                        mx="auto"
-                        p={4}
-                        rounded="20px"
-                    >
-                        <Flex>
-                            <Input
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => setName(e.target.value)}
-                                placeholder="Choose a name"
-                            />
-                            <Button
-                                ml={2}
-                                variantColor="teal"
-                                onClick={() => setIsConfirmed(true)}
-                            >
-                                Submit
-                            </Button>
-                        </Flex>
-                    </Box>
-                )} */}
                 {/* <JustOneClient playerID="1" />
             <JustOneClient playerID="2" /> */}
                 {/* <JustOneClient playerID="3" />
