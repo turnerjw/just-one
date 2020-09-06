@@ -14,7 +14,12 @@ export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
     return (
         <Box>
             <OtherPlayers {...props} />
-            <Grid templateColumns="150px 1fr 150px" gap={10} my={10} mx="auto">
+            <Grid
+                templateColumns="minmax(0, 150px) minmax(200px, 1fr) minmax(0, 150px)"
+                gap={10}
+                my={10}
+                mx="auto"
+            >
                 <Deck {...props} />
                 <Box></Box>
             </Grid>

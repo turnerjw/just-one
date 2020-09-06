@@ -38,7 +38,7 @@ export const App = () => {
         <ThemeProvider theme={customTheme}>
             <CSSReset />
             <Box bg="gray.900" py={10} height="100vh">
-                <Box maxW={1000} mx="auto">
+                <Box maxW={1000} px={2} mx="auto">
                     <Text color="white" fontSize="6xl">
                         <b>Only One Online</b>
                     </Text>
