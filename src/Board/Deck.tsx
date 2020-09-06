@@ -27,31 +27,42 @@ const deckShadows = [
     0 20px 1px -9px rgba(255, 215, 0)`,
 ];
 
-export const Deck: React.FC<BoardProps<JustOneState>> = (props) => {
-    const { G } = props;
+export interface DeckProps {
+    label: string;
+    count: number;
+}
+
+export const Deck: React.FC<DeckProps> = ({ count, label }) => {
     const deckShadow =
-        G.deck.length > 3
+        count > 3
             ? deckShadows[2]
-            : G.deck.length === 2
+            : count === 2
             ? deckShadows[1]
             : deckShadows[0];
     return (
         <Box>
-            <Text color="white" textAlign="center">
-                <b>Deck</b> ({G.deck.length} cards)
-            </Text>
             <AspectRatioBox maxW="150px" ratio={3 / 4}>
-                {G.deck.length ? (
+                {count ? (
                     <Box
                         background={`url("${url}"),
             linear-gradient(135deg,#0010ff,#0063e1)`}
                         rounded="20px"
-                        borderColor="purple.500"
+                        borderColor="white"
                         borderStyle="solid"
                         boxShadow={deckShadow}
                     />
-                ) : null}
+                ) : (
+                    <Box
+                        rounded="20px"
+                        borderColor="white"
+                        borderStyle="solid"
+                        borderWidth="2px"
+                    />
+                )}
             </AspectRatioBox>
+            <Text mt={4} color="white" textAlign="center">
+                <b>{label}</b> ({count} cards)
+            </Text>
         </Box>
     );
 };

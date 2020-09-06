@@ -9,7 +9,7 @@ import { OtherPlayers } from "./OtherPlayers";
 import { Deck } from "./Deck";
 
 export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
-    const {} = props;
+    const { G } = props;
 
     return (
         <Box>
@@ -20,8 +20,9 @@ export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
                 my={10}
                 mx="auto"
             >
-                <Deck {...props} />
+                <Deck count={G.deck.length} label="Deck" />
                 <Box></Box>
+                <Deck count={G.successPile.length} label="Success Pile" />
             </Grid>
             <PlayerControls {...props} />
         </Box>
