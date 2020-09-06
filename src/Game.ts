@@ -124,6 +124,9 @@ const skipGuess: Move<JustOneState> = (G, ctx) => {
         ctx.events.setActivePlayers({
             all: "endTurn",
             moveLimit: 1,
+            next: {
+                all: "waitingForOthers",
+            },
         });
     }
 };
