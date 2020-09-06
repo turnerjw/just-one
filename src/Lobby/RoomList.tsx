@@ -2,8 +2,6 @@ import React from "react";
 import { useQuery } from "react-query";
 import { Tooltip, Flex, Button, Text, Stack, Box } from "@chakra-ui/core";
 
-const server = "http://localhost:8000";
-
 interface RoomInstances {
     rooms: {
         gameID: string;
@@ -11,10 +9,18 @@ interface RoomInstances {
     }[];
 }
 
-export const RoomList: React.FC = () => {
+export interface RoomListProps {
+    serverUrl: string;
+    onJoinRoom: (playerId: number, roomId: string) => void;
+}
+
+export const RoomList: React.FC<RoomListProps> = ({
+    serverUrl,
+    onJoinRoom,
+}) => {
     const { data } = useQuery<RoomInstances>(
         "roomInstances",
-        () => fetch(`${server}/games/just-one`).then((res) => res.json()),
+        () => fetch(`${serverUrl}/games/just-one`).then((res) => res.json()),
         {
             refetchInterval: 5000,
         }
@@ -38,6 +44,10 @@ export const RoomList: React.FC = () => {
                             index === 0 ? player.name : `, ${player.name}`
                         }`;
                     }, "");
+                const currentPlayerCount = room.players.filter(
+                    (player) => !!player.name
+                ).length;
+                const totalPlayerCount = room.players.length;
                 return (
                     <Box key={room.gameID}>
                         <Tooltip
@@ -55,21 +65,27 @@ export const RoomList: React.FC = () => {
                                 bg="#0005"
                             >
                                 <Text ml={2} color="white">
-                                    <b>{room.gameID}</b>{" "}
-                                    {
-                                        room.players.filter(
-                                            (player) => !!player.name
-                                        ).length
-                                    }
-                                    /{room.players.length} players
+                                    <b>{room.gameID}</b> {currentPlayerCount}/
+                                    {totalPlayerCount} players
                                 </Text>
-                                <Button
-                                    ml={2}
-                                    variantColor="teal"
-                                    onClick={() => console.log("Join clicked")}
-                                >
-                                    Join
-                                </Button>
+                                {currentPlayerCount === totalPlayerCount ? (
+                                    <Button ml={2} variantColor="teal">
+                                        Spectate
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        ml={2}
+                                        variantColor="teal"
+                                        onClick={() =>
+                                            onJoinRoom(
+                                                currentPlayerCount,
+                                                room.gameID
+                                            )
+                                        }
+                                    >
+                                        Join
+                                    </Button>
+                                )}
                             </Flex>
                         </Tooltip>
                     </Box>
