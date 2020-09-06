@@ -38,31 +38,12 @@ export const App = () => {
         <ThemeProvider theme={customTheme}>
             <CSSReset />
             <Box bg="gray.900" py={10} height="100vh">
-                <Box maxW={1000} px={2} mx="auto">
+                <Box maxW={1000} px={4} mx="auto">
                     <Text color="white" fontSize="6xl">
                         <b>Only One Online</b>
                     </Text>
                     <Lobby />
                 </Box>
-                {/* <Box
-                    background={`url("${url}"),
-                        linear-gradient(135deg,#0010ff,#0063e1)`}
-                    maxW="sm"
-                    mt={10}
-                    mx="auto"
-                    p={4}
-                    rounded="20px"
-                >
-                    <OGLobby
-                        gameServer={`http://localhost:8000`}
-                        lobbyServer={`http://localhost:8000`}
-                        gameComponents={importedGames}
-                    />
-                </Box> */}
-                {/* <JustOneClient playerID="1" />
-            <JustOneClient playerID="2" /> */}
-                {/* <JustOneClient playerID="3" />
-            <JustOneClient playerID="4" /> */}
             </Box>
         </ThemeProvider>
     );
