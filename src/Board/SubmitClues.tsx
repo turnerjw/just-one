@@ -1,7 +1,7 @@
 import React from "react";
 import { BoardProps } from "boardgame.io/react";
 import { JustOneState } from "../Game";
-import { Flex, Input, Button } from "@chakra-ui/core";
+import { Flex, Input, Button, useToast } from "@chakra-ui/core";
 
 export const SubmitClues: React.FC<BoardProps<JustOneState>> = ({
     moves,
@@ -9,6 +9,8 @@ export const SubmitClues: React.FC<BoardProps<JustOneState>> = ({
     ctx,
 }) => {
     const [clue, setClue] = React.useState("");
+
+    const toast = useToast();
 
     return (
         <>
@@ -25,7 +27,18 @@ export const SubmitClues: React.FC<BoardProps<JustOneState>> = ({
                     <Button
                         ml={2}
                         variantColor="teal"
-                        onClick={() => moves.submitClue(clue)}
+                        onClick={() => {
+                            if (!clue) {
+                                toast({
+                                    title: "Are you dumb, fam?",
+                                    description: "You can't have a blank clue",
+                                    position: "top-right",
+                                    status: "warning",
+                                });
+                            } else {
+                                moves.submitClue(clue);
+                            }
+                        }}
                     >
                         Submit
                     </Button>
