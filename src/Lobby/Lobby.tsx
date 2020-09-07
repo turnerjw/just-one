@@ -135,12 +135,17 @@ export const Lobby: React.FC = () => {
 
     if (isGameStarted) {
         return (
-            <JustOneClient
-                credentials={playerCred}
-                gameID={currentRoomId}
-                playerID={playerId?.toString()}
-                debug={false}
-            />
+            <Box>
+                <Button variant="link" onClick={() => setIsGameStarted(false)}>
+                    Back to Lobby
+                </Button>
+                <JustOneClient
+                    credentials={playerCred}
+                    gameID={currentRoomId}
+                    playerID={playerId?.toString()}
+                    debug={false}
+                />
+            </Box>
         );
     }
 
