@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, AspectRatioBox, Text } from "@chakra-ui/core";
-import { url } from "../BackgroundPatterns";
+import { gameBackground } from "../BackgroundPatterns";
 
 const deckShadows = [
     `/* The top layer shadow */
@@ -42,8 +42,7 @@ export const Deck: React.FC<DeckProps> = ({ count, label }) => {
             <AspectRatioBox maxW="150px" ratio={3 / 4}>
                 {count ? (
                     <Box
-                        background={`url("${url}"),
-            linear-gradient(135deg,#0010ff,#0063e1)`}
+                        background={gameBackground}
                         rounded="20px"
                         borderColor="white"
                         borderStyle="solid"

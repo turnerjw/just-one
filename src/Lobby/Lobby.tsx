@@ -11,7 +11,7 @@ import {
 import { useMutation } from "react-query";
 import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
-import { url } from "../BackgroundPatterns";
+import { gameBackground } from "../BackgroundPatterns";
 import { RoomList } from "./RoomList";
 import { CreateRoom } from "./CreateRoom";
 import { Room } from "./Room";
@@ -150,8 +150,7 @@ export const Lobby: React.FC = () => {
                 Lobby
             </Text>
             <Box
-                background={`url("${url}"),
-                        linear-gradient(135deg,#0010ff,#0063e1)`}
+                background={gameBackground}
                 maxW="md"
                 my={10}
                 mx="auto"
@@ -191,8 +190,7 @@ export const Lobby: React.FC = () => {
                 )}
             </Box>
             <Box
-                background={`url("${url}"),
-            linear-gradient(135deg,#0010ff,#0063e1)`}
+                background={gameBackground}
                 maxW="md"
                 mx="auto"
                 p={4}

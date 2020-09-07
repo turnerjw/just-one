@@ -1,13 +1,12 @@
 import React from "react";
 import { BoardProps } from "boardgame.io/react";
-import { Box, Text, Grid } from "@chakra-ui/core";
+import { Box, Grid } from "@chakra-ui/core";
 
 import { JustOneState } from "../Game";
-import { url } from "../BackgroundPatterns";
 import { PlayerControls } from "./PlayerControls";
 import { OtherPlayers } from "./OtherPlayers";
 import { Deck } from "./Deck";
-import { DisplayArea } from "./DisplayArea";
+import { DisplayArea } from "./DisplayArea/DisplayArea";
 
 export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
     const { G } = props;

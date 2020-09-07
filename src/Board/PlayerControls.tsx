@@ -3,7 +3,7 @@ import { BoardProps } from "boardgame.io/react";
 import { Box, Stack, Text, Flex, Tooltip, Icon } from "@chakra-ui/core";
 
 import { JustOneState } from "../Game";
-import { url } from "../BackgroundPatterns";
+import { playerBackgrounds } from "../BackgroundPatterns";
 import { DrawCard } from "./DrawCard";
 import { ChooseNumber } from "./ChooseNumber";
 import { SubmitClues } from "./SubmitClues";
@@ -21,8 +21,9 @@ export const PlayerControls: React.FC<BoardProps<JustOneState>> = (props) => {
 
     return (
         <Box
-            background={`url("${url}"),
-            linear-gradient(135deg,#0010ff,#0063e1)`}
+            background={
+                playerID ? playerBackgrounds[+playerID] : playerBackgrounds[0]
+            }
             maxW="md"
             mt={10}
             mx="auto"
