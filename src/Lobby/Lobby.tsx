@@ -18,7 +18,9 @@ import { Room } from "./Room";
 import { JustOne } from "../Game";
 import { Board } from "../Board/Board";
 
-const serverUrl = "http://localhost:8000";
+const serverUrl = `http://${window.location.hostname}:8000`;
+
+console.log(serverUrl);
 
 const JustOneClient = Client({
     game: JustOne,
@@ -107,23 +109,24 @@ export const Lobby: React.FC = () => {
                 status: "warning",
                 position: "top-right",
             });
-        }
-        try {
-            const playerCred = await mutate({
-                playerId: playerId,
-                playerName: name,
-                roomId: roomId,
-            });
-            setCurrentRoomId(roomId);
-            setPlayerCred(playerCred?.playerCredentials);
-            setPlayerId(playerId);
-        } catch {
-            toast({
-                title: "Can't join game",
-                description: "There was a problem, idk what happened",
-                status: "error",
-                position: "top-right",
-            });
+        } else {
+            try {
+                const playerCred = await mutate({
+                    playerId: playerId,
+                    playerName: name,
+                    roomId: roomId,
+                });
+                setCurrentRoomId(roomId);
+                setPlayerCred(playerCred?.playerCredentials);
+                setPlayerId(playerId);
+            } catch {
+                toast({
+                    title: "Can't join game",
+                    description: "There was a problem, idk what happened",
+                    status: "error",
+                    position: "top-right",
+                });
+            }
         }
     };
 
