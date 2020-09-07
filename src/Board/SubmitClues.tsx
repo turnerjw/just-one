@@ -37,6 +37,7 @@ export const SubmitClues: React.FC<BoardProps<JustOneState>> = ({
                                 });
                             } else {
                                 moves.submitClue(clue);
+                                setClue("");
                             }
                         }}
                     >

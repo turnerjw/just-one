@@ -31,7 +31,7 @@ export const GuessWord: React.FC<BoardProps<JustOneState>> = ({
                             onClick={() => {
                                 if (!guess)
                                     toast({
-                                        title: "Are you dumb fam?",
+                                        title: "Are you dumb, fam?",
                                         description:
                                             "You can't have a blank guess",
                                         status: "warning",
@@ -39,6 +39,7 @@ export const GuessWord: React.FC<BoardProps<JustOneState>> = ({
                                     });
                                 else {
                                     moves.guessWord(guess);
+                                    setGuess("");
                                 }
                             }}
                         >
