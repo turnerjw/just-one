@@ -22,7 +22,6 @@ export const Guess: React.FC<BoardProps<JustOneState>> = ({
                         rounded="20px"
                         color="white"
                         p={4}
-                        mr={2}
                         mb={2}
                         textAlign="center"
                     >
@@ -40,12 +39,12 @@ export const Guess: React.FC<BoardProps<JustOneState>> = ({
                                 rounded="20px"
                                 color="white"
                                 p={4}
-                                mr={2}
                                 mb={2}
                                 textAlign="center"
                             >
                                 <b>
-                                    {G.currentCard && G.selectedWordIndex
+                                    {G.currentCard &&
+                                    G.selectedWordIndex !== undefined
                                         ? G.currentCard[G.selectedWordIndex]
                                         : null}
                                 </b>
