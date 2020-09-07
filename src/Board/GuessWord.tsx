@@ -1,7 +1,7 @@
 import React from "react";
 import { BoardProps } from "boardgame.io/react";
 import { JustOneState } from "../Game";
-import { Stack, Flex, Input, Button } from "@chakra-ui/core";
+import { Stack, Flex, Input, Button, useToast } from "@chakra-ui/core";
 
 export const GuessWord: React.FC<BoardProps<JustOneState>> = ({
     moves,
@@ -9,6 +9,8 @@ export const GuessWord: React.FC<BoardProps<JustOneState>> = ({
     ctx,
 }) => {
     const [guess, setGuess] = React.useState("");
+
+    const toast = useToast();
 
     return (
         <>
@@ -26,7 +28,19 @@ export const GuessWord: React.FC<BoardProps<JustOneState>> = ({
                         <Button
                             ml={2}
                             variantColor="teal"
-                            onClick={() => moves.guessWord(guess)}
+                            onClick={() => {
+                                if (!guess)
+                                    toast({
+                                        title: "Are you dumb fam?",
+                                        description:
+                                            "You can't have a blank guess",
+                                        status: "warning",
+                                        position: "top-right",
+                                    });
+                                else {
+                                    moves.guessWord(guess);
+                                }
+                            }}
                         >
                             Submit
                         </Button>
