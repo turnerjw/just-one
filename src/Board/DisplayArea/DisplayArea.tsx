@@ -7,6 +7,7 @@ import { CurrentCard } from "./CurrentCard";
 import { Clues } from "./Clues";
 import { Guess } from "./Guess";
 import { Result } from "./Result";
+import { GameOver } from "./GameOver";
 
 export const DisplayArea: React.FC<BoardProps<JustOneState>> = (props) => {
     return (
@@ -15,6 +16,7 @@ export const DisplayArea: React.FC<BoardProps<JustOneState>> = (props) => {
             <Clues {...props} />
             <Guess {...props} />
             <Result {...props} />
+            <GameOver {...props} />
         </Flex>
     );
 };
