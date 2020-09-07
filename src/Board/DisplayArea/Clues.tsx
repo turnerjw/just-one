@@ -12,23 +12,37 @@ export const Clues: React.FC<BoardProps<JustOneState>> = ({ G, ctx }) => (
                 <Text color="white" fontSize="xl">
                     <b>Clues:</b>
                 </Text>
-                <Flex wrap="wrap">
-                    {G.clues.map((clue) => (
-                        <Text
-                            background={playerBackgrounds[+clue.playerId]}
-                            rounded="20px"
-                            maxW="sm"
-                            key={clue.playerId}
-                            color="white"
-                            p={4}
-                            mr={2}
-                            mb={2}
-                            textAlign="center"
-                        >
-                            <b>{clue.clue}</b>
-                        </Text>
-                    ))}
-                </Flex>
+                {G.clues.length ? (
+                    <Flex wrap="wrap">
+                        {G.clues.map((clue) => (
+                            <Text
+                                background={playerBackgrounds[+clue.playerId]}
+                                rounded="20px"
+                                maxW="sm"
+                                key={clue.playerId}
+                                color="white"
+                                p={4}
+                                mr={2}
+                                mb={2}
+                                textAlign="center"
+                            >
+                                <b>{clue.clue}</b>
+                            </Text>
+                        ))}
+                    </Flex>
+                ) : (
+                    <Text
+                        rounded="20px"
+                        maxW="sm"
+                        color="white"
+                        p={4}
+                        mr={2}
+                        mb={2}
+                        textAlign="center"
+                    >
+                        <b>No clues</b>
+                    </Text>
+                )}
             </Box>
         ) : null}
     </>
