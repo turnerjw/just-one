@@ -1,7 +1,7 @@
 import React from "react";
 import { BoardProps } from "boardgame.io/react";
-import { JustOneState, TurnResult } from "../Game";
-import { Stack, Button, Text } from "@chakra-ui/core";
+import { JustOneState } from "../Game";
+import { Button } from "@chakra-ui/core";
 
 export const EndTurn: React.FC<BoardProps<JustOneState>> = ({
     G,
