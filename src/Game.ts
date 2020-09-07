@@ -136,10 +136,12 @@ const checkGuess: Move<JustOneState> = (G, ctx, isCorrect: boolean) => {
         G.turnResult = TurnResult.Correct;
         G.successPile.push(G.currentCard);
         G.currentCard = undefined;
+        G.guess = undefined;
     } else if (!isCorrect && G.currentCard) {
         G.turnResult = TurnResult.Incorrect;
         G.discards.push(G.currentCard);
         G.currentCard = undefined;
+        G.guess = undefined;
         const card = G.deck.pop();
         if (card) {
             G.discards.push(card);

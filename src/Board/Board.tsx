@@ -7,6 +7,7 @@ import { url } from "../BackgroundPatterns";
 import { PlayerControls } from "./PlayerControls";
 import { OtherPlayers } from "./OtherPlayers";
 import { Deck } from "./Deck";
+import { DisplayArea } from "./DisplayArea";
 
 export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
     const { G } = props;
@@ -21,7 +22,7 @@ export const Board: React.FC<BoardProps<JustOneState>> = (props) => {
                 mx="auto"
             >
                 <Deck count={G.deck.length} label="Deck" />
-                <Box></Box>
+                <DisplayArea {...props} />
                 <Deck count={G.successPile.length} label="Success Pile" />
             </Grid>
             <PlayerControls {...props} />
