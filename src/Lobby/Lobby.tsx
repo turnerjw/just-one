@@ -18,15 +18,13 @@ import { Room } from "./Room";
 import { JustOne } from "../Game";
 import { Board } from "../Board/Board";
 
-const serverUrl = `http://${window.location.hostname}:8000`;
-
-console.log(serverUrl);
+const serverUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
 const JustOneClient = Client({
     game: JustOne,
     board: Board,
     multiplayer: SocketIO({
-        server: `localhost:8000`,
+        server: serverUrl,
     }),
 });
 
