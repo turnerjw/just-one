@@ -25,10 +25,11 @@
     },
     "scripts": {
         "start-dev": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "tsc src/server.ts --esModuleInterop --outDir build/server/ & react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "serve": "node -r esm -r ts-node/register src/server.ts",
+        "serve-dev": "node -r esm -r ts-node/register src/server.ts",
+        "serve": "node build/server/server.js",
         "start": "npm run serve"
     },
     "eslintConfig": {
